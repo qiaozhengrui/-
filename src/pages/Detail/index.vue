@@ -388,15 +388,26 @@
         }
       },
       //加入购物车的回调函数
-      addShopcar() {
+      async addShopcar() {
         //1.发请求---将商品加入到数据库(通知服务器)
-        this.$store.dispatch('addorUpdateShopCart', {
-          skuId: this.$route.params.skuId,
-          skuNum: this.skuNum,
-        })
+        /*  当前这也是派发一个action,也想服务器发请求，判断加入购物车成功进行路由跳转，失败抛错给用户提示
+          下面的代码在调用addorUpdateShopCart,这个方法加了async 一定是promise返回成功or失败 */
+        //下方返回的promise，加上await因为要等待成功，所以也要async
+        try {
+          let result = await this.$store.dispatch('addorUpdateShopCart', {
+            skuId: this.$route.params.skuId,
+            skuNum: this.skuNum,
+          })
+          //成功 进行路由跳转
+
+        } catch(error) {
+          //失败
+          alert(error.message)
+
+        }
         //2.服务器存储成功---进行路由跳转  且要带参数
         //3.失败---给用户提示
-      }
+      },
     }
   }
 </script>

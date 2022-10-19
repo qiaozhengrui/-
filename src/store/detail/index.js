@@ -22,10 +22,11 @@ const actions = {
     //加入购物车后发请求，前台将参数带给服务器，服务器写入数据成功后，没返回其他数据，只返回code==200，表示这次操作成功
     //因为服务器没有返回其余数据，所以不需要在进行存储修改数据
     let result = await reqAddorUpdateShopCart(skuId, skuNum)
-    // if (result.code == 200) {
-    //   commit('ADDORUPDATESHOPCART', result.data)
-    // }
-    console.log(result)
+    if (result.code == 200) {//请求成功表示加入购物车成功
+      return "ok"
+    } else {//请求失败表示加入购物车失败。返回一个失败的promise
+      return Promise.reject(new Error('faile'))
+    }
   }
 }
 const getters = {//简化从仓库拿数据的繁琐程度

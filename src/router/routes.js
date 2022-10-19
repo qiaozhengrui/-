@@ -4,9 +4,14 @@ import Login from '@/pages/Login'
 import Register from '@/pages/Register'
 import Search from '@/pages/Search'
 import Detail from '@/pages/Detail'
+import AddCartSuccess from '@pages/AddCartSuccess'
 
 //路由配置信息对外暴露
 export default [
+  {
+    name: 'AddCartSuccess',
+    
+  },
   {
     name: 'Home',
     path: '/home',
