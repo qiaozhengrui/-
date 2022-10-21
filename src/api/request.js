@@ -3,6 +3,10 @@ import axios from 'axios'
 
 //引入进度条
 import nprogress from 'nprogress'
+
+//在当前模块引入store（仓库）
+import store from '@/store'
+
 //还得引入进度条样式
 import 'nprogress/nprogress.css'
 //start方法：进度条开始   done：进度条结束
@@ -21,6 +25,11 @@ const requests = axios.create({
 requests.interceptors.request.use((config) => {
   //config：配置对象，对象里有个重要的属性，headers请求头
   //请求拦截器捕获到请求的时候，进度条开始变动
+  //若游客临时身份存在
+  if (store.state.detail.uuid_token) {
+    //给请求头加临时字段(useTempId, 不能乱写，是商量好的)
+    config.headers.userTempId = store.state.detail.uuid_token
+  }
   nprogress.start()
   return config
 })
