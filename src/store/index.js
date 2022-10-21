@@ -4,7 +4,7 @@ import Vuex from 'vuex'
 //需要使用插件一次
 Vue.use(Vuex)
 
-//需要把小仓库合并引入大仓库
+//需要把子仓库合并引入父仓库
 import home from './home'
 import search from './search'
 import detail from './detail'
