@@ -1,7 +1,11 @@
 import { reqGetGoodInfo, reqAddorUpdateShopCart } from "@/api"
+//封装的游客身份模块uuid-->生成一个随机的字符传（生成好后不能变了）
+import { getUUID } from '@/utils/uuid_token'
 
 const state = {
-  goodInfo: {}
+  goodInfo: {},
+  //游客临时身份
+  uuid_token: getUUID(),
 }
 const mutations = {
   GETGOODINFO(state, goodInfo) {
@@ -17,7 +21,7 @@ const actions = {
     }
   },
   //获取商品信息的action, 两个参数
-  async addorUpdateShopCart({commit}, {skuId, skuNum}){
+  async addorUpdateShopCart({commit}, {skuId, skuNum}) {
     //加入购物车返回的解构
     //加入购物车后发请求，前台将参数带给服务器，服务器写入数据成功后，没返回其他数据，只返回code==200，表示这次操作成功
     //因为服务器没有返回其余数据，所以不需要在进行存储修改数据
