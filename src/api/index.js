@@ -54,6 +54,24 @@ export const reqAddorUpdateShopCart = (skuId, skuNum) => requests({
   // data: skuId, skuNum,
 })
 
+//获取购物车列表的数据接口   URL: /api/cart/cartList   请求方式：get  参数：无
+export const reqCartList = () => requests({
+  url: 'http://gmall-h5-api.atguigu.cn/api/cart/cartList',
+  method: 'get',
+})
+
+//删除购物车商品数据接口  URL:/api/cart/deleteCart/{skuId}  请求方式：delete  参数：需要
+export const reqDeleteCart = (skuId) => requests({
+  url: `http://gmall-h5-api.atguigu.cn/api/cart/deleteCart/${skuId}`,
+  method: 'delete',
+})
+
+//切换商品选中状态的接口  URL: /api/cart/checkCart/{skuID}/{isChecked}  method: get  parameter: require
+export const reqUpdateCheckedById = (skuId, isChecked) => requests({
+  url: `http://gmall-h5-api.atguigu.cn/api/cart/checkCart/${skuId}/${isChecked}`,
+  method: 'get',
+})
+
 
 
 
