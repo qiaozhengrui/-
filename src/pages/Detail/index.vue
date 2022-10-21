@@ -398,12 +398,19 @@
             skuId: this.$route.params.skuId,
             skuNum: this.skuNum,
           })
-          //成功 进行路由跳转
-
+          //成功 进行路由跳转 且要带参数将产品的信息带给下一级的路由组件
+          //本地存储|会话存储。一般存储的是字符串,不允许存储对象
+          sessionStorage.setItem("SKUINFO", JSON.stringify(this.skuInfo))
+          this.$router.push({name: 'AddCartSuccess', query: {
+            // skuInfo: this.skuInfo, 
+            //简单的数据skuNum，通过query形式给路由组件传递过去
+            //产品信息的数据【复杂：skuInfo】，通过会话存储(不会持久化，会话结束数据消失)
+            //本地存储|会话存储。一般存储的是字符串,不允许存储对象
+            skuNum: this.skuNum,//只带产品个数
+          }})
         } catch(error) {
           //失败
           alert(error.message)
-
         }
         //2.服务器存储成功---进行路由跳转  且要带参数
         //3.失败---给用户提示
