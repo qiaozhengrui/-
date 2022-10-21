@@ -4,14 +4,11 @@ import Login from '@/pages/Login'
 import Register from '@/pages/Register'
 import Search from '@/pages/Search'
 import Detail from '@/pages/Detail'
-import AddCartSuccess from '@pages/AddCartSuccess'
+import AddCartSuccess from '@/pages/AddCartSuccess'
+import ShopCart from '@/pages/ShopCart'
 
 //路由配置信息对外暴露
 export default [
-  {
-    name: 'AddCartSuccess',
-    
-  },
   {
     name: 'Home',
     path: '/home',
@@ -65,6 +62,22 @@ export default [
     path: '/detail/:skuId?',
     component: Detail,
     meta: {
+      show: true,
+    }
+  },
+  {
+    name: 'AddCartSuccess',
+    path: '/addcartsuccess',
+    component: AddCartSuccess,
+    meta: {
+      show: true,
+    }
+  },
+  {//购物车路由
+    name: 'ShopCart',
+    path: '/shopcart',
+    component: ShopCart,
+    meta: {//带有footer组件
       show: true,
     }
   },
