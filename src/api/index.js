@@ -72,6 +72,18 @@ export const reqUpdateCheckedById = (skuId, isChecked) => requests({
   method: 'get',
 })
 
+//注册验证码的接口   URL: /api/user/passport/sendCode/{phone}   method: get   parameter: require
+export const reqGetCode = (phone) => requests({
+  url: `http://gmall-h5-api.atguigu.cn/api/user/passport/sendCode/${phone}`,
+  method: 'get',
+})
+
+//用户注册的接口   URL: /api/user/passport/register   method: post   parameter: require(phone, password, code)
+export const reqUserRegister = (data) => requests({
+  url: 'http://gmall-h5-api.atguigu.cn/api/user/passport/register',
+  method: 'post',
+  data,
+})
 
 
 
