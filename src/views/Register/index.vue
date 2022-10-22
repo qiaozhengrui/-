@@ -8,32 +8,33 @@
       </h3>
       <div class="content">
         <label>手机号:</label>
-        <input type="text" placeholder="请输入你的手机号">
+        <!-- v-model收集用户输入的手机号 -->
+        <input type="text" placeholder="请输入你的手机号" v-model="phone">
         <span class="error-msg">错误提示信息</span>
       </div>
       <div class="content">
         <label>验证码:</label>
-        <input type="text" placeholder="请输入验证码">
-        <img ref="code" src="http://182.92.128.115/api/user/passport/code" alt="code">
+        <input type="text" placeholder="请输入验证码" v-model="code">
+        <button style="width: 100px; height: 38px" @click="getCode">验证码</button>
         <span class="error-msg">错误提示信息</span>
       </div>
       <div class="content">
         <label>登录密码:</label>
-        <input type="text" placeholder="请输入你的登录密码">
+        <input type="password" placeholder="请输入你的登录密码" v-model="password">
         <span class="error-msg">错误提示信息</span>
       </div>
       <div class="content">
         <label>确认密码:</label>
-        <input type="text" placeholder="请输入确认密码">
+        <input type="password" placeholder="请输入确认密码" v-model="password1">
         <span class="error-msg">错误提示信息</span>
       </div>
       <div class="controls">
-        <input name="m1" type="checkbox">
+        <input name="m1" type="checkbox" :checked="agree">
         <span>同意协议并注册《尚品汇用户协议》</span>
         <span class="error-msg">错误提示信息</span>
       </div>
       <div class="btn">
-        <button>完成注册</button>
+        <button @click="userRegister(phone, code, password, password1)">完成注册</button>
       </div>
     </div>
 
@@ -58,7 +59,46 @@
 
 <script>
   export default {
-    name: 'Register'
+    name: 'Register',
+    data() {
+      return {
+        //收集表单数据---手机号
+        phone: '',
+        //收集验证码
+        code: '',
+        //密码
+        password: '',
+        //确认密码
+        password1: '',
+        //勾选同意协议
+        agree: false,
+      }
+    },
+    methods: {
+      //获取手机验证码
+      //18912389976
+      async getCode() {
+        //简单判断下---至少有数据
+        const { phone } = this//将phone从this中解构出来
+        //phone为真才执行后者
+        phone && await this.$store.dispatch('getCode', phone)
+        // console.log(this.$store)  //自己打印看下仓库中的code在哪
+        //将组件的code属性值重新变为仓库中的验证码[正常验证码自己填写]
+        this.code = this.$store.state.user.code
+      },
+      //用户注册   注册成功需跳转登录界面
+      async userRegister(phone, code, password, password1) {
+        try {
+          //关于参数也可以解构就不用上下都带了  const {phone, code, password, password1} = this
+          //手机号、验证码、两次输入密码都正确才执行后面派发actions
+          (phone && code && password == password1) && await this.$store.dispatch('userRegister', {phone, code, password})
+          //如果注册成功------> 则进行 路由 跳转 (push方法进行跳转)
+          this.$router.push('/login')
+        } catch(error) {//失败提示错误
+          alert('注册失败，请检查原因')
+        }
+      }
+    }
   }
 </script>
 
