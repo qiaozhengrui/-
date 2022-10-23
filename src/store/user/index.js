@@ -1,12 +1,16 @@
 //登录与注册合并的模块
-import { reqGetCode, reqUserRegister } from '@/api'
+import { reqGetCode, reqUserRegister, reqUserLogin } from '@/api'
 
 const state = {
   code: '',
+  token: '',
 }
 const mutations = {
   GETCODE(state, code) {
     state.code = code
+  },
+  USERLOGIN(state, token) {
+    state.token = token
   }
 }
 const actions = {
@@ -33,6 +37,18 @@ const actions = {
       return 'ok'
     } else {
       return Promise.reject(new Error(result.message))
+    }
+  },
+  //用户登录
+  async userLogin({commit}, data) {
+    let result = await reqUserLogin(data)
+    //服务器下发token，用户唯一标识符（uuid），将来经常通过token找服务器要用户信息进行展示
+    console.log(result)
+    if (result.code == 200) {
+      commit('USERLOGIN', result.data.token)
+      return 'ok'
+    } else {
+      return Promise.reject(new Error('faile'))
     }
   }
 }
