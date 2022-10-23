@@ -37,6 +37,8 @@ export default {
   mounted() {
     //派发action，获取floor组件的数据      发请求
     this.$store.dispatch("getFloorList")
+    //校验获取用户信息后在首页展示
+    this.$store.dispatch('userInfo')
   },
   computed: {
     ...mapState({
