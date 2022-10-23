@@ -85,5 +85,11 @@ export const reqUserRegister = (data) => requests({
   data,
 })
 
+//用户登录接口   URL: /api/user/passport/login   method: post   parameter: require(phone, password)
+export const reqUserLogin = (data) => requests({
+  url: 'http://gmall-h5-api.atguigu.cn/api/user/passport/login',
+  method: 'post',
+  data,
+})
 
 
