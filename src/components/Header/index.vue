@@ -14,7 +14,7 @@
           </p>
           <!-- 有用户信息==登录，显示下方字段 -->
           <p v-else>
-            <a>{{ userName }}</a>
+            <a>{{ username }}</a>
             <a class="register">退出登录</a>
           </p>
         </div>
@@ -149,8 +149,7 @@ export default {
   },
   computed: {
     //用户名信息
-    userName() {
-      console.log(this.$store.state.user.info.name)
+    username() {
       return this.$store.state.user.info.name
     }
   }
