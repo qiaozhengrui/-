@@ -5,11 +5,17 @@
       <div class="container">
         <div class="loginList">
           <p>尚品汇欢迎您！</p>
-          <p>
+          <!-- 没有用户名信息==未登录，显示下方的p字段 -->
+          <p v-if="!username">
             <span>请</span>
             <!-- 声明式导航要有to属性 -->
             <router-link to="/login">登录</router-link>
             <router-link class="register" to="/register">免费注册</router-link>
+          </p>
+          <!-- 有用户信息==登录，显示下方字段 -->
+          <p v-else>
+            <a>{{ userName }}</a>
+            <a class="register">退出登录</a>
           </p>
         </div>
         <div class="typeList">
@@ -140,6 +146,13 @@ export default {
     this.$bus.$on('clear', () => {
       this.keyword = ''
     })
+  },
+  computed: {
+    //用户名信息
+    userName() {
+      console.log(this.$store.state.user.info.name)
+      return this.$store.state.user.info.name
+    }
   }
 };
 </script>
@@ -162,6 +175,7 @@ export default {
         p {
           float: left;
           margin-right: 10px;
+          margin-top: 0px;
 
           .register {
             border-left: 1px solid #b3aeae;
