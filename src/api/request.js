@@ -27,8 +27,13 @@ requests.interceptors.request.use((config) => {
   //请求拦截器捕获到请求的时候，进度条开始变动
   //若游客临时身份存在
   if (store.state.detail.uuid_token) {
-    //给请求头加临时字段(useTempId, 不能乱写，是商量好的)
+    //给请求头加游客临时身份字段(useTempId, 不能乱写，是商量好的)
     config.headers.userTempId = store.state.detail.uuid_token
+  }
+  //需把token带给服务器
+  if (store.state.user.token) {
+    //给请求头加上token字段（token，不能乱写，是商量好的）
+    config.headers.token = store.state.user.token
   }
   nprogress.start()
   return config
