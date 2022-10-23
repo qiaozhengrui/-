@@ -1,9 +1,12 @@
 //登录与注册合并的模块
-import { reqGetCode, reqUserRegister, reqUserLogin } from '@/api'
+import { reqGetCode, reqUserRegister, reqUserLogin, reqUserInfo } from '@/api'
+//引入token进行本地存储//获取token
+import { setToken, getToken } from '@/utils/token'
 
 const state = {
   code: '',
-  token: '',
+  token: getToken(),//方法在utils下的token.js
+  info: {},
 }
 const mutations = {
   GETCODE(state, code) {
@@ -11,6 +14,9 @@ const mutations = {
   },
   USERLOGIN(state, token) {
     state.token = token
+  },
+  USERINFO(state, info) {
+    state.info = info
   }
 }
 const actions = {
@@ -45,10 +51,20 @@ const actions = {
     //服务器下发token，用户唯一标识符（uuid），将来经常通过token找服务器要用户信息进行展示
     console.log(result)
     if (result.code == 200) {
+      //用户登录成功且获取到token
       commit('USERLOGIN', result.data.token)
+      //进行持久存储token，因为token放在vuex中不会持久存储，刷新数据就没了
+      setToken(result.data.token)
       return 'ok'
     } else {
       return Promise.reject(new Error('faile'))
+    }
+  },
+  //校验获取用户信息【】       [带着用户的token向服务器要用户信息]
+  async userInfo({commit}) {
+    let result = await reqUserInfo()
+    if (result.code == 200) {
+      commit('USERINFO', result.data)
     }
   }
 }
