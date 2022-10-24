@@ -12,3 +12,8 @@ export const getToken = () => {
   //这种起始状态也相当于空字符串。但下次页面刷新时，就可以拿到已经在本地存储过的token(一次了)
   return localStorage.getItem('TOKEN')
 }
+
+//清除本地存储的token
+export const removeToken = () => {
+  localStorage.removeItem('TOKEN')
+}
