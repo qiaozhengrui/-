@@ -93,9 +93,16 @@ export const reqUserLogin = (data) => requests({
 })
 
 //校验获取用户信息【带着用户的token向服务器要用户信息】
-//url: /api/user/passport/auth/getUserInfo   method: 'get'   parameter: no
+//url: /api/user/passport/auth/getUserInfo   method: get   parameter: no
 export const reqUserInfo = () => requests({
   url: 'http://gmall-h5-api.atguigu.cn/api/user/passport/auth/getUserInfo',
+  method: 'get',
+})
+
+
+//退出登录的接口   URL: /api/user/passport/logout   method: get   parameter: no
+export const reqLogout = () => requests({
+  url: 'http://gmall-h5-api.atguigu.cn/api/user/passport/logout',
   method: 'get',
 })
 
