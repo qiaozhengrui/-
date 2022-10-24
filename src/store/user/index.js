@@ -1,7 +1,7 @@
 //登录与注册合并的模块
-import { reqGetCode, reqUserRegister, reqUserLogin, reqUserInfo } from '@/api'
+import { reqGetCode, reqUserRegister, reqUserLogin, reqUserInfo, reqLogout } from '@/api'
 //引入token进行本地存储//获取token
-import { setToken, getToken } from '@/utils/token'
+import { setToken, getToken, removeToken } from '@/utils/token'
 
 const state = {
   code: '',
@@ -17,9 +17,17 @@ const mutations = {
   },
   USERINFO(state, info) {
     state.info = info
+  },
+  //清除本地存储
+  CLEAR(state) {
+    //把仓库中相关用户信息清空
+    state.token = '',
+    state.info = {},
+    //本地存储数据清空
+    removeToken()
   }
 }
-const actions = {
+const actions = { //action里面不能操作state，提交mutation修改state
   //获取验证码
   async getCode({commit}, phone) {
     //获取验证码的接口，并把验证码返回。正常情况下，后台把验证码发到用户手机上，这么做为了省钱
@@ -37,7 +45,6 @@ const actions = {
   //用户注册
   async userRegister({commit}, data) {
     let result = await reqUserRegister(data)
-    console.log(result.message)
     //等待用户注册成功
     if (result.code == 200) {
       return 'ok'
@@ -65,6 +72,17 @@ const actions = {
     let result = await reqUserInfo()
     if (result.code == 200) {
       commit('USERINFO', result.data)
+    }
+  },
+  //退出登录
+  async userLogout({commit}) {
+    let result = await reqLogout()
+    //action里面不能操作state，提交mutation修改state
+    if (result.code == 200) {
+      commit('CLEAR')
+      return 'ok'
+    } else {
+      return Promise.reject(new Error('faile,错误'))
     }
   }
 }
