@@ -67,11 +67,14 @@ const actions = { //action里面不能操作state，提交mutation修改state
       return Promise.reject(new Error('faile'))
     }
   },
-  //校验获取用户信息【】       [带着用户的token向服务器要用户信息]
+  //校验 获取用户信息【】       [带着用户的token向服务器要用户信息]
   async userInfo({commit}) {
     let result = await reqUserInfo()
     if (result.code == 200) {
       commit('USERINFO', result.data)
+      return 'ok'
+    } else {
+      return Promise.reject(new Error('falie,错误'))
     }
   },
   //退出登录
