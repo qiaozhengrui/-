@@ -4,13 +4,14 @@ import VueRouter from 'vue-router'
 
 //使用插件
 Vue.use(VueRouter)
+//引入store，
+import store from '@/store'
 
 import routes from './routes.js'
 
 //1先把VueRouter原型对象的push，先保存一份
 let originPush = VueRouter.prototype.push
 let originReplace = VueRouter.prototype.replace
-// console.log(originReplace)
 
 //2重写push、replace
 //第一个参数：告诉原来push方法，往哪里跳转(传递哪些参数)
@@ -36,8 +37,8 @@ VueRouter.prototype.replace = function(location, resolve, reject) {
   }
 }
 
-//配置路由，需要暴露出去
-export default new VueRouter({
+//配置路由，对外暴露VueRouter类的实例
+let router =  new VueRouter({
   //开始配置路由信息
   routes,
   //滚动行为   路由跳转时，滚动条的位置
@@ -46,3 +47,48 @@ export default new VueRouter({
     return { y: 0 } 
   },
 })
+
+//全局守卫：前置守卫(在路由跳转之前进行判断)
+router.beforeEach(async (to, from, next) => {
+  //to: 可以获取到将要跳转的那个路由信息
+  //from: 可以获取到从哪个路由而来的信息【当前导航正要离开的路由】
+  //next: 是个放行函数
+  //1.next() 放行所有  2.next('path') 放行到指定路由                      3.next(false)中断当前的导航
+  // next()
+  //用户登录了有otken，未登录则没有
+  let token = store.state.user.token
+  //拿到用户名信息
+  let name = store.state.user.info.name
+  
+  //用户登录
+  if (token) {
+    //想去login 重定向，回首页
+    if (to.path == '/login') {
+      next('/home')
+      console.log(1)
+    } else {
+      //登录了去的不是login  【home|search|detail|register|shopcart】
+      if (name) {//用户名信息已有，放行
+        next()
+      } else {
+      //用户名信息没有    派发action，让仓库里有用户名信息再跳转
+        try {
+          //等待获取用户信息成功之后 放行
+          await store.dispatch('userInfo')
+          next()
+        } catch(error) {
+          //token过期失效，获取不到用户信息，重新登录
+          //清除token成功
+          await store.dispatch('userLogout')
+          next('/login')
+        }
+      }
+    }
+  } else {
+  //用户未登录【暂时没处理完毕，后期再继续处理】  先全放行
+    next()
+  }
+})
+
+//需要暴露出去
+export default router
