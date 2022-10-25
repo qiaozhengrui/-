@@ -99,10 +99,21 @@ export const reqUserInfo = () => requests({
   method: 'get',
 })
 
-
 //退出登录的接口   URL: /api/user/passport/logout   method: get   parameter: no
 export const reqLogout = () => requests({
   url: 'http://gmall-h5-api.atguigu.cn/api/user/passport/logout',
+  method: 'get',
+})
+
+//获取用户地址信息的接口   URL: /api/user/userAddress/auth/findUserAddressList   method: get   parameter: no
+export const reqAddressInfo = () => requests({
+  url: 'http://gmall-h5-api.atguigu.cn/api/user/userAddress/auth/findUserAddressList',
+  method: 'get',
+})
+
+//获取交易页面商品清单(订单)信息的接口   URL: /api/order/auth/trade   method: get   parameter: no
+export const reqOrderInfo = () => requests({
+  url: 'http://gmall-h5-api.atguigu.cn/api/order/auth/trade',
   method: 'get',
 })
 
