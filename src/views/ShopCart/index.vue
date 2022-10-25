@@ -69,7 +69,7 @@
           <i class="summoney">{{ totalPrice }}</i>
         </div>
         <div class="sumbtn">
-          <a class="sum-btn" href="###" target="_blank">结算</a>
+          <router-link class="sum-btn" to="/trade">结算</router-link>
         </div>
       </div>
     </div>
@@ -184,7 +184,11 @@ import throttle from "/node_modules/lodash/throttle";
         } catch(error) {//修改不了给提示
           console.log(error.message)
         }
-      }
+      },
+      //结算跳转
+      // goTrade() {
+      //   this.$router.push('/trade')
+      // }
     },
     computed: {
       ...mapGetters(['cartList']),
