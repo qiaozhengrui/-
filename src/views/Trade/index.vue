@@ -33,39 +33,25 @@
       </div>
       <div class="detail">
         <h5>商品清单</h5>
-        <ul class="list clearFix">
+        <ul class="list clearFix" v-for="(order, index) in orderInfo.detailArrayList" :key="order.skuId">
           <li>
-            <img src="./images/goods.png" alt="">
+            <img :src="order.imgUrl" style="width: 100px; height: 100px">
           </li>
           <li>
-            <p>Apple iPhone 6s (A1700) 64G 玫瑰金色 移动联通电信4G手机硅胶透明防摔软壳 本色系列</p>
+            <!-- 商品清单的商品名字 -->
+            <p>{{ order.skuName }}</p>
             <h4>7天无理由退货</h4>
           </li>
           <li>
-            <h3>￥5399.00</h3>
+            <h3>￥{{ order.orderPrice }}</h3>
           </li>
-          <li>X1</li>
-          <li>有货</li>
-        </ul>
-        <ul class="list clearFix">
-          <li>
-            <img src="./images/goods.png" alt="">
-          </li>
-          <li>
-            <p>
-              Apple iPhone 6s (A1700) 64G 玫瑰金色 移动联通电信4G手机硅胶透明防摔软壳 本色系列</p>
-            <h4>7天无理由退货</h4>
-          </li>
-          <li>
-            <h3>￥5399.00</h3>
-          </li>
-          <li>X1</li>
+          <li>X{{ order.skuNum }}</li>
           <li>有货</li>
         </ul>
       </div>
       <div class="bbs">
         <h5>买家留言：</h5>
-        <textarea placeholder="建议留言前先与商家沟通确认" class="remarks-cont"></textarea>
+        <textarea placeholder="建议留言前先与商家沟通确认" class="remarks-cont" v-model="msg"></textarea>
 
       </div>
       <div class="line"></div>
@@ -78,8 +64,8 @@
     <div class="money clearFix">
       <ul>
         <li>
-          <b>共<i>1</i>件商品，总商品金额</b>
-          <span>¥5399.00</span>
+          <b>共<i>{{ orderInfo.totalNum }}</i>种商品，总商品金额</b>
+          <span>¥{{ orderInfo.totalAmount }}.00</span>
         </li>
         <li>
           <b>返现：</b>
@@ -92,7 +78,7 @@
       </ul>
     </div>
     <div class="trade">
-      <div class="price">应付金额:　<span>¥5399.00</span></div>
+      <div class="price">应付金额:　<span>¥{{ orderInfo.totalAmount }}.00</span></div>
       <div class="receiveInfo">
         寄送至:
         <span>{{ userDefaultAddress.fullAddress }}</span>
@@ -101,7 +87,7 @@
       </div>
     </div>
     <div class="sub clearFix">
-      <router-link class="subBtn" to="/pay">提交订单</router-link>
+      <a class="subBtn" @click="submitOrder">提交订单</a>
     </div>
   </div>
 </template>
@@ -111,6 +97,14 @@ import { mapState } from 'vuex'
 
   export default {
     name: 'Trade',
+    data() {
+      return {
+        //买家留言
+        msg: '',
+        //订单号
+        orderId: '',
+      }
+    },
     mounted() {
       //挂载完毕后，通过action调用getUserAddress发请求      (获取交易页面用户地址信息)
       this.$store.dispatch('getUserAddress')
@@ -119,13 +113,14 @@ import { mapState } from 'vuex'
     },
     computed: {
       ...mapState({
-        addressInfo: state => state.trade.address
+        addressInfo: state => state.trade.address,
+        orderInfo: state => state.trade.orderInfo,
       }),
       //将来选中订单最终选中地址
       userDefaultAddress() {
         //find: 查找数组中符合条件的返回为最终结果
         return this.addressInfo.find(item => item.isDefault == 1) || {}
-      }
+      },
     },
     methods: {
       //修改默认地址  排他 
@@ -134,6 +129,31 @@ import { mapState } from 'vuex'
         addressInfo.forEach(item => item.isDefault = 0)
         //只有点的那个才为1，才显示
         address.isDefault = 1
+      },
+      //提交订单的触发事件
+      async submitOrder() {
+        //解构出的交易编号
+        let { tradeNo } = this.orderInfo
+        //其余六个参数
+        let data = {
+          consignee: this.userDefaultAddress.consignee,
+          consigneeTel: this.userDefaultAddress.phoneNum,
+          deliveryAddress: this.userDefaultAddress.fullAddress,
+          paymentWay: "ONLINE",
+          orderComment: this.msg,
+          orderDetailList: this.orderInfo.detailArrayList,//商品清单
+        }
+        //需要带参数：tradeNo，data(6个参数)
+        let result = await this.$API.reqSubmitOrder(tradeNo, data)
+        //提交订单成功
+        if (result.code == 200) {
+          //把参数放在data数据存储
+          this.orderId = result.data
+          //路由跳转 + 路由传参    用key=value写
+          this.$router.push('/pay?orderId=' + this.orderId)
+        } else {//提交订单失败
+          alert(result.data)
+        }
       }
     }
   }
@@ -280,6 +300,7 @@ import { mapState } from 'vuex'
         .list {
           display: flex;
           justify-content: space-between;
+          list-style: none;
 
           li {
             line-height: 30px;
