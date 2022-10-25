@@ -6,6 +6,7 @@ import Search from '@/views/Search'
 import Detail from '@/views/Detail'
 import AddCartSuccess from '@/views/AddCartSuccess'
 import ShopCart from '@/views/ShopCart'
+import Trade from '@/views/Trade'
 
 //路由配置信息对外暴露
 export default [
@@ -80,6 +81,11 @@ export default [
     meta: {//带有footer组件
       show: true,
     }
+  },
+  {//交易路由
+    name: 'Trade',
+    path: '/trade',
+    component: Trade,
   },
   {
     //重定向，在项目跑起来的时候，访问'/'立马会定向到首页
