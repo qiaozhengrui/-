@@ -7,6 +7,9 @@ import Detail from '@/views/Detail'
 import AddCartSuccess from '@/views/AddCartSuccess'
 import ShopCart from '@/views/ShopCart'
 import Trade from '@/views/Trade'
+import Pay from '@/views/Pay'
+import PaySuccess from '@/views/PaySuccess'
+import Center from '@/views/Center'
 
 //路由配置信息对外暴露
 export default [
@@ -86,6 +89,24 @@ export default [
     name: 'Trade',
     path: '/trade',
     component: Trade,
+  },
+  {//支付路由
+    name: 'Pay',
+    path: '/pay',
+    component: Pay,
+    meta: {
+      show: true,
+    },
+  },
+  {//支付成功路由
+    name: 'PaySuccess',
+    path: '/paysuccess',
+    component: PaySuccess,
+  },
+  {//个人中心路由
+    name: 'Center',
+    path: '/center',
+    component: Center,
   },
   {
     //重定向，在项目跑起来的时候，访问'/'立马会定向到首页
