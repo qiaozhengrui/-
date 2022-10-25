@@ -24,11 +24,10 @@ const actions = {
   //获取交易页面商品清单的信息
   async getOrderInfo({commit}) {
     let result = await reqOrderInfo()
-    console.log(result)
     if (result.code == 200) {
       commit('GETORDERINFO', result.data)
     }
-  }
+  },
 }
 const getters = {
 
