@@ -19,11 +19,16 @@ import '@/mock/mockServe'
 //引入swiper样式，轮播。 因为三个地方用到轮播样式，所以放在入口文件一起用
 import "swiper/css/swiper.css"
 
+//统一接口api文件夹里面全部请求函数
+//统一引入
+import * as API from '@/api'
+
 new Vue({
   render: h => h(App),
   //全局事件总线$bus的配置
   beforeCreate() {
     Vue.prototype.$bus = this//this是VM实例
+    Vue.prototype.$API = API//挂载在Vue.prototype实例身上
   },
   //注册路由  底下的写法是key/value一致，省略value的写法【router是小写的】
   //注册路由信息：当这里书写router的时候，组件身上都拥有$route、$router属性
