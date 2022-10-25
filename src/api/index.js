@@ -117,4 +117,17 @@ export const reqOrderInfo = () => requests({
   method: 'get',
 })
 
+//提交订单的接口   URL: /api/order/auth/submitOrder?tradeNo={tradeNo}   method: post   
+//  parameter: require(tradeNo|consignee|consigneeTel|deliveryAddress|paymentWay|orderComment|orderDetailList)
+export const reqSubmitOrder = (tradeNo, data) => requests({
+  url: `http://gmall-h5-api.atguigu.cn/api/order/auth/submitOrder?tradeNo=${tradeNo}`,
+  method: 'post',
+  data,
+})
+
+//获取订单支付信息的接口   URL: /api/payment/weixin/createNative/{orderId}   method: get   parameter: require(orderId)
+export const reqGetPayInfo = (orderId) => requests({
+  url: `http://gmall-h5-api.atguigu.cn/api/payment/weixin/createNative/${orderId}`,
+  method: 'get',
+})
 
