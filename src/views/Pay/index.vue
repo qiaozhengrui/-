@@ -99,12 +99,12 @@
       this.getPayInfo()
     },
     methods: {
-      async getPayInfo() {
+      async getPayInfo() {//获取支付信息
         let result = await this.$API.reqGetPayInfo(this.orderId)
         //成功组件中存储支付信息
         console.log(result)
-        if (result.code == 200) {
-          this.payInfo = result.data
+        if (result.code == 200) {//成功带着订单号给服务器，让服务器传回要的数据(如：金额)
+          this.payInfo = result.data//
         } else {
           alert(result.data)
         }
