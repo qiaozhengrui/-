@@ -10,6 +10,9 @@ import Trade from '@/views/Trade'
 import Pay from '@/views/Pay'
 import PaySuccess from '@/views/PaySuccess'
 import Center from '@/views/Center'
+//引用二级路由组件
+import GroupOrder from '@/views/Center/groupOrder'
+import MyOrder from '@/views/Center/myOrder'
 
 //路由配置信息对外暴露
 export default [
@@ -107,6 +110,29 @@ export default [
     name: 'Center',
     path: '/center',
     component: Center,
+    meta: {
+      show: true,
+    },
+    children: [//二级路由
+      {
+        name: 'groupOrder',
+        path: 'grouporder',//注意不要再加 / 加了就是一级路由
+        component: GroupOrder,
+      },
+      {
+        name: 'myOrder',
+        path: 'myorder',
+        component: MyOrder,
+        meta: {
+          show: true,
+        },
+      },
+      {
+        //重定向，进入个人中心先展示我的订单订单路由页面
+        path: '/center',
+        redirect: '/center/myorder'
+      }
+    ]
   },
   {
     //重定向，在项目跑起来的时候，访问'/'立马会定向到首页
