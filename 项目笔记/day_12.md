@@ -21,11 +21,20 @@
     ElementUI：PC端组件库
     vant：vue移动端
 
+  1）elementUI按需引入，配置文件发生变化，项目需要重启
+    安装：npm i --save element-ui
+    按需引入：npm install babel-plugin-component -D
+
+
 
 5. 二维码生成 [qrcode]
+    安装 npm i qrcode --save
+    引入 import QRCode from 'qrcode'
 
 
 6. 支付业务
+    根据异步返回的成功失败
 
 
 7. 个人中心
+    强拆分为二级路由
