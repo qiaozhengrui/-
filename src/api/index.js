@@ -131,3 +131,8 @@ export const reqGetPayInfo = (orderId) => requests({
   method: 'get',
 })
 
+//查询支付订单状态的接口   URL: /api/payment/weixin/queryPayStatus/{orderId}   method: get   parameter: require(orderId)
+export const reqPayStatus = (orderId) => requests({
+  url: `http://gmall-h5-api.atguigu.cn/api/payment/weixin/queryPayStatus/${orderId}`,
+  method: 'get',
+})
