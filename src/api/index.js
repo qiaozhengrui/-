@@ -33,7 +33,7 @@ export const reqFloorList = () => mockRequests.get('/floor')
 //   "props": ["1:1700-2799:价格", "2:6.65-6.74英寸:屏幕尺寸"],
 //   "trademark": "4:小米"
 // }
-//当前这个函数不需要接受外部传递参数，且当前接口给服务器传递参数params，至少是一个空对象
+//当前这个函数不需接受外部传递参数，且当前接口给服务器传递参数params，至少是个空对象
 export const reqGetSearchInfo = (params) => requests({
   url: 'http://gmall-h5-api.atguigu.cn/api/list',
   method: 'post',
@@ -134,5 +134,11 @@ export const reqGetPayInfo = (orderId) => requests({
 //查询支付订单状态的接口   URL: /api/payment/weixin/queryPayStatus/{orderId}   method: get   parameter: require(orderId)
 export const reqPayStatus = (orderId) => requests({
   url: `http://gmall-h5-api.atguigu.cn/api/payment/weixin/queryPayStatus/${orderId}`,
+  method: 'get',
+})
+
+//获取个人中心的接口   URL: /api/order/auth/{page}/{limit}   method: get    parameter: require({page}/{limit})
+export const reqMyOrderList = (page, limit) => requests({
+  url: `http://gmall-h5-api.atguigu.cn/api/order/auth/${page}/${limit}`,
   method: 'get',
 })
