@@ -169,7 +169,7 @@
               //跳转到下一路由
               this.$router.push('/paysuccess')
             }
-          }, 1200)
+          }, 1100)
         }
       },
     }
