@@ -59,7 +59,7 @@
                   <div class="p-img">
                     <!-- 商品的图片：路由跳转的时候须带商品的id参数(id params) -->
                     <router-link :to=" `/detail/${good.id}` ">
-                      <img :src="good.defaultImg" />
+                      <img v-lazy="good.defaultImg" />
                     </router-link>
                   </div>
                   <!-- 价格 -->
