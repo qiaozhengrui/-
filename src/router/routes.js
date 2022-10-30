@@ -1,25 +1,11 @@
-//引用一级路由组件
-import Home from '@/views/Home'
-import Login from '@/views/Login'
-import Register from '@/views/Register'
-import Search from '@/views/Search'
-import Detail from '@/views/Detail'
-import AddCartSuccess from '@/views/AddCartSuccess'
-import ShopCart from '@/views/ShopCart'
-import Trade from '@/views/Trade'
-import Pay from '@/views/Pay'
-import PaySuccess from '@/views/PaySuccess'
-import Center from '@/views/Center'
-//引用二级路由组件
-import GroupOrder from '@/views/Center/groupOrder'
-import MyOrder from '@/views/Center/myOrder'
 
 //路由配置信息对外暴露
 export default [
   {
     name: 'Home',
     path: '/home',
-    component: Home,
+    //路由懒加载的写法，当此路由被访问时，箭头函数调用一次，再加载对应组件，这样高效
+    component: () => import('@/views/Home'),
     meta: {//需不需要带footer组件
       show: true,
     }
@@ -27,7 +13,7 @@ export default [
   {
     name: 'login',
     path: '/login',
-    component: Login,
+    component: () => import('@/views/Login'),
     meta: {
       show: false,
     }
@@ -35,7 +21,7 @@ export default [
   {
     name: 'register',
     path: '/register',
-    component: Register,
+    component: () => import('@/views/Register'),
     meta: {
       show: false,
     }
@@ -43,7 +29,7 @@ export default [
   {
     name: 'search',
     path: '/search/:keyword?',//:keyword表示占位  ?表示params参数可传可不传
-    component: Search,
+    component: () => import('@/views/Search'),
     meta: {
       show: true,
     },
@@ -67,7 +53,7 @@ export default [
   {
     name: 'Detail',
     path: '/detail/:skuId?',
-    component: Detail,
+    component: () => import('@/views/Detail'),
     meta: {
       show: true,
     }
@@ -75,7 +61,7 @@ export default [
   {
     name: 'AddCartSuccess',
     path: '/addcartsuccess',
-    component: AddCartSuccess,
+    component: () => import('@/views/AddCartSuccess'),
     meta: {
       show: true,
     }
@@ -83,7 +69,7 @@ export default [
   {//购物车路由
     name: 'ShopCart',
     path: '/shopcart',
-    component: ShopCart,
+    component: () => import('@/views/ShopCart'),
     meta: {//带有footer组件
       show: true,
     }
@@ -91,25 +77,45 @@ export default [
   {//交易路由
     name: 'Trade',
     path: '/trade',
-    component: Trade,
+    component: () => import('@/views/Trade'),
+    //路由独享守卫
+    beforeEnter: (to, from, next) => {
+      //去交易页面，从购物车路由而来，放行
+      if (from.path == '/shopcart') {
+        next()
+      } else {
+        //从别的路由而来，中断当前的导航，停留在当前路由
+        next(false)
+      }
+    }
   },
   {//支付路由
     name: 'Pay',
     path: '/pay',
-    component: Pay,
+    component: () => import('@/views/Pay'),
     meta: {
       show: true,
     },
+    //路由独享守卫
+    beforeEnter: (to, from, next) => {
+      //从trade来，放行
+      if (from.path == '/trade') {
+        next()
+      } else {
+        //别的不放行，停留在当前路由
+        next(false)
+      }
+    }
   },
   {//支付成功路由
     name: 'PaySuccess',
     path: '/paysuccess',
-    component: PaySuccess,
+    component: () => import('@/views/PaySuccess'),
   },
   {//个人中心路由
     name: 'Center',
     path: '/center',
-    component: Center,
+    component: () => import('@/views/Center'),
     meta: {
       show: true,
     },
@@ -117,12 +123,12 @@ export default [
       {
         name: 'groupOrder',
         path: 'grouporder',//注意不要再加 / 加了就是一级路由
-        component: GroupOrder,
+        component: () => import('@/views/Center/groupOrder'),
       },
       {
         name: 'myOrder',
         path: 'myorder',
-        component: MyOrder,
+        component: () => import('@/views/Center/myOrder'),
         meta: {
           show: true,
         },
