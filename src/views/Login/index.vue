@@ -81,7 +81,10 @@
         try {
           //登录成功则路由跳转(home首页)
           phone && password && await this.$store.dispatch('userLogin', {phone, password})//传参以对象的方式
-          this.$router.push('/home')
+          //登录的路由组件：看路由中是否包含query参数， 有：跳到query参数指定路由；无：跳到home
+          let toPath = this.$route.query.redirect || '/home'
+          //根据toPath的情况进行路由跳转
+          this.$router.push(toPath)
         } catch(error) {
           //登录失败报错提示
           alert(new Error('登录失败，请检查缘由'))
