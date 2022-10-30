@@ -3,7 +3,7 @@ import App from './App.vue'
 //定义全局组件    
 import TypeNav from '@/components/TypeNav'//三级联动全局组件
 import Carousel from '@/components/Carousel'//轮播图全局组件
-import Pagination from '@/components/Pagination'
+import Pagination from '@/components/Pagination'//分页器全局组件
 //按需引入element-ui
 import { Button, MessageBox } from 'element-ui'
 
