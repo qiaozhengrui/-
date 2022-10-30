@@ -16,8 +16,9 @@
         </div>
         <div class="right-gocart">
           <!-- 把产品id带回detail -->
-          <router-link :to="`/detail/${skuInfo.id}`" class="sui-btn btn-xlarge">查看商品详情</router-link>
-          <router-link to="/shopcart">去购物车结算</router-link>
+          <router-link :to="`/detail/${skuInfo.id}`" class="sui-btn btn-xlarge" 
+          style="background-color: green; color: white">查看商品详情</router-link>
+          <router-link to="/shopcart" style="background-color: red; color: white">去购物车结算</router-link>
         </div>
       </div>
     </div>
