@@ -59,13 +59,11 @@ router.beforeEach(async (to, from, next) => {
   let token = store.state.user.token
   //拿到用户名信息
   let name = store.state.user.info.name
-  
   //用户登录
   if (token) {
     //想去login 重定向，回首页
     if (to.path == '/login') {
       next('/home')
-      console.log(1)
     } else {
       //登录了去的不是login  【home|search|detail|register|shopcart】
       if (name) {//用户名信息已有，放行
@@ -85,8 +83,16 @@ router.beforeEach(async (to, from, next) => {
       }
     }
   } else {
-  //用户未登录【暂时没处理完毕，后期再继续处理】  先全放行
-    next()
+    //用户未登录：不能去交易相关、不能去支付相关[pay|paysuccess]、不能去个人中心
+    //未登录去上面这些路由需要【登录】
+    let toPath = to.path
+    if (toPath.indexOf('/trade') != -1 || toPath.indexOf('/pay') != -1|| toPath.indexOf('/center') != -1) {
+      //把未登录时想去没去成的的信息，存储于地址栏中【路由】
+      next('/login?redirect=' + toPath)//重定向
+    } else {
+      //去的不是上面这些路由则放行(home/search/shopcart)
+      next()
+    }
   }
 })
 
