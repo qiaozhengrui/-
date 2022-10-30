@@ -1,4 +1,5 @@
 module.exports = {
+  productionSourceMap: false,
   lintOnSave: false,
   //代理跨域
   devServer: {
