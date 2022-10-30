@@ -32,6 +32,14 @@ import "swiper/css/swiper.css"
 //统一引入
 import * as API from '@/api'
 
+//引入懒加载插件
+import VueLazyload from 'vue-lazyload'
+//引入懒加载要用的图片
+import duck from '@/assets/1.gif'
+//注册懒加载
+Vue.use(VueLazyload, {
+  loading: duck,//懒加载默认的图片
+})
 new Vue({
   render: h => h(App),
   //全局事件总线$bus的配置
